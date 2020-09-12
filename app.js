@@ -13,6 +13,7 @@ const TwitterStrategy = require('passport-twitter').Strategy;
 var indexRouter = require('./routes/index');
 var authRouter = require('./routes/auth');
 var usersRouter = require('./routes/users');
+var listsRouter = require('./routes/lists');
 
 var app = express();
 
@@ -86,6 +87,7 @@ mongo.connect(process.env.MONGODB_URI, (err, client) => {
 
   app.use('/', indexRouter);
   app.use('/', authRouter);
+  app.use('/api/lists', listsRouter);
   
   app.get('/login',
   function(req, res){
