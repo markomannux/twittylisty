@@ -87,7 +87,7 @@ mongo.connect(process.env.MONGODB_URI, (err, client) => {
 
   app.use('/', indexRouter);
   app.use('/', authRouter);
-  app.use('/api/lists', listsRouter);
+  app.use('/lists', listsRouter);
   
   app.get('/login',
   function(req, res){

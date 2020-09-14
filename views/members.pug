@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  a(href='/logout') Logout
+  h1= title
+  div.profile.center
+    h3= user.displayName
+
+  div.members
+    ul
+      each member in members.users
+        li
+          img(src=`${member.profile_image_url_https}`, alt="")
+          div #{member.screen_name}
+          |
+          div #{member.description}
+          |
+          //#{JSON.stringify(member)}

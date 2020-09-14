@@ -9,7 +9,7 @@ router.get('/login/twitter',
 router.get('/oauth/callback',
   passport.authenticate('twitter', { failureRedirect: '/login' }),
   function(req, res) {
-    res.redirect('/profile');
+    res.redirect('/lists');
   });
 
 router.get('/profile',

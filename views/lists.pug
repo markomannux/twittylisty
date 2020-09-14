@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  a(href='/logout') Logout
+  h1= title
+  div.profile.center
+    h3= user.displayName
+  
+  div.lists
+    ul
+      each list in lists
+        li
+          a(href=`/lists/${list.id_str}`) #{list.name}
+          span  (#{list.member_count})
+        |
+        // #{JSON.stringify(list)}

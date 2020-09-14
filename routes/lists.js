@@ -17,7 +17,35 @@ router.get('/',
           })
 
         T.get('lists/list', {}, function (err, data, response) {
-            res.json(data);
+            res.render('lists', {
+                title: 'Lists',
+                user: req.user,
+                lists: data
+            });
+        })
+    });
+
+router.get('/:id',
+    ensureAuthenticated,
+    function(req, res) {
+        var T = new Twit({
+            consumer_key:         process.env.TWITTER_CONSUMER_KEY,
+            consumer_secret:      process.env.TWITTER_CONSUMER_SECRET,
+            access_token:         req.user.accessToken,
+            access_token_secret:  req.user.tokenSecret,
+            timeout_ms:           60*1000,  // optional HTTP request timeout to apply to all requests.
+            strictSSL:            true,     // optional - requires SSL certificates to be valid.
+          })
+
+        console.log(req.params.id);
+        T.get('lists/members', {list_id: req.params.id, include_entities: false}, function (err, data, response) {
+            if (err) console.log(err.stack)
+            
+            res.render('members', {
+                title: 'Members',
+                user: req.user,
+                members: data
+            });
         })
     });
 
