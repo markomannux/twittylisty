@@ -1,0 +1,26 @@
+extends ../layout
+
+block content
+  span= user.displayName
+  |
+  |
+  a(href='/logout') Logout
+  h1= title
+  |
+  |
+  a(href='/lists') Back
+
+  div.members
+    ul
+      each member in members.users
+        li.max-w-sm.mx-auto.p-6.bg-white.rounded-lg.shadow-xl.my-2
+          div.flex
+            img.w-12.h-12.rounded-full.mr-5(src=`${member.profile_image_url_https}`, alt="")
+            |
+            div.mt-4
+              div.text-lg #{member.screen_name}
+              |
+              |
+              div.text-base.mt-3 #{member.description}
+              |
+              //#{JSON.stringify(member)}

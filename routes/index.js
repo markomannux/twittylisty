@@ -5,7 +5,7 @@ var router = express.Router();
 /* GET home page. */
 router.get('/', function(req, res, next) {
   if(req.isAuthenticated()) {
-    res.redirect('/profile');
+    res.redirect('/lists');
     return;
   }
   res.render('index', { title: 'Express' });

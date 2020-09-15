@@ -2,6 +2,7 @@ var express = require('express');
 const { rawListeners } = require('../app');
 const passport    = require('passport');
 var router = express.Router();
+const ensureAuthenticated = require('../helpers/auth-helper').ensureAuthenticated;
 
 router.get('/login/twitter',
   passport.authenticate('twitter'));
@@ -24,13 +25,5 @@ router.get('/logout',
       res.redirect('/');
     });
   });
-
-  
-function ensureAuthenticated(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    res.redirect('/');
-};
   
 module.exports = router;

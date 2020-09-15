@@ -1,0 +1,15 @@
+extends ../layout
+
+block content
+  span= user.displayName
+  |
+  |
+  a(href='/logout') Logout
+  h1= title
+  
+  div.lists
+    ul
+      each list in lists
+        li.max-w-sm.mx-auto.p-6.bg-white.rounded-lg.shadow-xl.my-2
+          a.text-lg(href=`/lists/${list.id_str}`) #{list.name}
+          span.text-s.text-gray-600  (#{list.member_count})

@@ -26,7 +26,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-mongo.connect(process.env.MONGODB_URI, (err, client) => {
+mongo.connect(
+  process.env.MONGODB_URI,
+  { useUnifiedTopology: true },
+  (err, client) => {
 
   if (err) {
     console.log('Database errore: ' + err);
@@ -88,15 +91,6 @@ mongo.connect(process.env.MONGODB_URI, (err, client) => {
   app.use('/', indexRouter);
   app.use('/', authRouter);
   app.use('/lists', listsRouter);
-  
-  app.get('/login',
-  function(req, res){
-    console.log('ENV');
-    console.log(process.env);
-    console.log('Headers:');
-    console.log(req.headers)
-    res.render('login');
-  });
   
   // catch 404 and forward to error handler
   app.use(function(req, res, next) {
