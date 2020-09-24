@@ -1,15 +1,16 @@
 
 const fs = require('fs');
 const store = { }
+const storedataPath = process.env.STOREDATA || 'storedata';
 
-if(!fs.existsSync('storedata')) {
-    fs.mkdirSync('storedata', {});
+if(!fs.existsSync(storedataPath)) {
+    fs.mkdirSync(storedataPath, {});
 }
 
 function handleTtlExpired(entry) {
     return function() {
         delete store[entry.key];
-        fs.unlink(`storedata/${entry.key}`, (err) => {
+        fs.unlink(`${storedataPath}/${entry.key}`, (err) => {
             if (err) {
                 throw err;
             }
@@ -45,9 +46,9 @@ function set(key, value, ttl) {
         store[key].invalidateTtl();
     }
     store[key] = new StoreEntry(key, value, ttl);
+    const entryValue = store[key].getValue();
     return new Promise((resolve, reject) => {
-        const entryValue = store[key].getValue();
-        fs.writeFile(`storedata/${key}`, store[key]._value,  (err, data) => {
+        fs.writeFile(`${storedataPath}/${key}`, store[key]._value,  (err, data) => {
             resolve(entryValue);
         })
     });
@@ -61,14 +62,30 @@ function get(key) {
 }
 
 function ttl(key) {
+    const left = store[key].ttl();
     return new Promise((resolve, reject) => {
-        const left = store[key].ttl();
         resolve(left);
     });
+}
+
+function del(key) {
+    if (store[key]) {
+        store[key].invalidateTtl();
+        fs.unlink(`${storedataPath}/${key}`, (err) => {
+            if (err) {
+                throw err;
+            }
+            delete store[key];
+        })
+    }
+    return new Promise((resolve, reject) => {
+        resolve(store[key]);
+    })
 }
 
 module.exports = {
     set,
     get,
+    del,
     ttl
 }

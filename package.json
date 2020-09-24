@@ -23,6 +23,7 @@
     "twit": "^2.2.11"
   },
   "devDependencies": {
-    "jest": "^26.4.2"
+    "jest": "^26.4.2",
+    "rimraf": "^3.0.2"
   }
 }
