@@ -69,23 +69,33 @@ function ttl(key) {
 }
 
 function del(key) {
-    if (store[key]) {
-        store[key].invalidateTtl();
-        fs.unlink(`${storedataPath}/${key}`, (err) => {
-            if (err) {
-                throw err;
-            }
-            delete store[key];
-        })
-    }
     return new Promise((resolve, reject) => {
-        resolve(store[key]);
+        if (store[key]) {
+            store[key].invalidateTtl();
+            fs.unlink(`${storedataPath}/${key}`, (err) => {
+                if (err) {
+                    throw err;
+                }
+                delete store[key];
+                resolve();
+            })
+        }
     })
+}
+
+function clear() {
+    const promises = [];
+    for(const key in store) {
+        promises.push(del(key));
+    }
+
+    return Promise.all(promises);
 }
 
 module.exports = {
     set,
     get,
     del,
+    clear,
     ttl
 }
